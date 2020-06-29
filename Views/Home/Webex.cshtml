@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "Webex";
+
+    var authCode = ViewData["code"];
+    var returnedState = ViewData["state"];
+}
+
+@section Scripts{
+    <script src="~/js/webex/config.js"></script>
+    <script src="~/js/webex/ui.js"></script>
+    <script src="~/js/webex/api.js"></script>
+}
+
+<p>Webex</p>
+
+@if (authCode != null)
+{
+    <p>
+        <span>Code: </span>
+        <span class="font-weight-bold">
+            @authCode
+        </span>
+        <input type="hidden" id="authCode" value="@authCode" />
+    </p>
+    <p>
+        <span>State: </span>
+        <span class="font-weight-bold">
+            @returnedState
+        </span>
+        <input type="hidden" id="returnedState" value="@returnedState" />
+    </p>
+}
+
+<form action="https://webexapis.com/v1/authorize"
+      method="get"
+      id="auth_form">
+
+    <input type="hidden" name="client_id" value="C27471a41abda4e0a6637923a5fbe1fd6970e4a692b368972d9795ce0e1d7de0d" />
+    <input type="hidden" name="response_type" value="code" />
+    <input type="hidden" name="redirect_uri" value="https://localhost:44367/Home/Webex" />
+    <input type="hidden" id="scopes" name="scope" value="meeting:schedules_write spark:kms meeting:schedules_read  meeting:preferences_read meeting:preferences_write meeting:recordings_read meeting:recordings_write" />
+
+    <div class="form-inline">
+        <div class="form-group my-2">
+            <!--<button class="btn btn btn-outline-success btn-sm mr-sm-2" type="button" id="authIframeBtn" onclick="signIframe()">SignIn through iFrame</button>-->
+            <button class="btn btn btn-outline-success btn-sm mr-sm-2" type="submit" id="authReloadBtn" >SignIn through Page Reload</button>
+            <button class="btn btn btn-outline-success btn-sm mr-sm-2" type="button" id="authAjaxReloadBtn" onclick="signAjaxReload()">SignIn through Ajax Page Reload</button>
+            <button class="btn btn-success btn-sm mr-sm-2" type="button" id="" onclick="GetAccessToken()">AccessToken</button>
+            <button class="btn btn-primary btn-sm mr-sm-2" type="button" id="" onclick="NewMeeting()">New Meeting</button>
+        </div>
+    </div>
+    <div class="form-group">
+            <input type="text" class="form-control form-control-sm" name="state" placeholder="Serialized form state" />
+    </div>
+    <div id="form2">
+        <div class="form-group row">
+            <label class="col-form-label col-sm-3">Access token: </label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="accessToken" readonly />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-3">Access token Expires In: </label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control-plaintext" id="expiresIn" readonly />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-3">Refresh token: </label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="refreshToken" readonly />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-3">Refresh token expires in: </label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control-plaintext" id="refreshTokenExpiresIn" readonly />
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<div class="row">
+    <div class="col-12">
+        <iframe name="webex_frame" style="width:100%; height:60vh">
+        </iframe>
+    </div>
+
+</div>

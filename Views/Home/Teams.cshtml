@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Teams";
+}
+
+@section HeaderScripts{
+    <script src="~/lib/msal-common/msal-common.js"></script>
+    <script src="~/lib/msal-browser/msal-browser.js"></script>
+}
+
+@section Scripts{
+    <script src="~/js/teams/config.js"></script>
+    <script src="~/js/teams/ui.js"></script>
+    <script src="~/js/teams/auth.js"></script>
+    <script src="~/js/teams/graph.js"></script>
+}
+
+<p>Teams</p>
+
+<form>
+    <div class="form-inline">
+        <div class="form-group my-2">
+            <button class="btn btn btn-outline-success btn-sm mr-sm-2" type="button" id="loginPopup" onclick="signIn(this.id)">Authorize Popup</button>
+            <button class="btn btn btn-outline-success btn-sm mr-sm-2" type="button" id="loginRedirect" onclick="postAuth(this.id)">Authorize Redirect </button>
+            <button class="btn btn btn-outline-danger btn-sm d-none" type="button" id="signOutBtn" onclick="signOut()">Sign Out</button>
+        </div>
+        <div class="form-group my-2 ml-auto">
+            <label class="my-2 font-weight-bold d-none" id="authorizedUserLabel">Username</label>
+        </div>
+    </div>
+
+   
+
+    <div class="form-group d-none" id="createMeetingForm">
+        <hr class="separator">
+        <div class="form-inline">
+            <div class="form-group my-2">
+                <button class="btn btn-primary btn-sm mb-2 mr-sm-2" type="button" id="create-teams-meeting-btn" onclick="createNewMeeting()">Create Meeting</button>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="addToCalendar">
+                    <label class="custom-control-label" for="addToCalendar">Add to calendar</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-inline">
+            <div class="form-group">
+                <label class="my-2 mr-sm-2 ">Start</label>
+                <input class="my-2 mr-3 form-control" type="datetime" />
+                <label class="my-2 mr-sm-2 ">End</label>
+                <input class="my-2  mr-3 form-control" type="datetime" />
+            </div>
+        </div>
+
+        <div class="form-inline">
+            <div class="form-group">
+                <label class="my-2 mr-sm-2 ">Title</label>
+                <input class="my-2 mr-3 form-control" type="text" id="meetingTitle"/>
+            </div>
+        </div>
+    </div>
+
+    <div id="linkFormGroup" class="form-group d-none">
+        <hr class="separator">
+        <div class="form-group row">
+            <div class="col-sm-2 my-auto">
+                <a id="meetingLink" href="#"></a>
+            </div>
+            <div class="input-group col-sm-10">
+                <input class="form-control" type="text" id="teams-link-placeholder" placeholder="Link here..." readonly>
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="button" onclick="copyMeetingLink()" data-toggle="tooltip" data-placement="right" title="Copied!">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
